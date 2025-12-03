@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using December.Infrastructure;
-//using December.Domain.Interfaces;
-using December.Domain.Entities;
-
-namespace December.API.Controllers
+﻿namespace December.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class PeopleController : ControllerBase
     {
         //private readonly DatabaseContext _context;
-        IPersonRepository context;
-        public PeopleController( IPersonRepository c)
+        IPersonService context;
+        public PeopleController(IPersonService c)
         {
             context = c;
         }
 
         // GET: api/People
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
+        public async Task<ActionResult<IEnumerable<PersonDTOResponse>>> GetPersons()
         {
-            return await context.GetAll();
+            return Ok(await context.GetAll());
         }
+
+        // Controller --> Service --> Repository --> Service --> Controller
 
 
 

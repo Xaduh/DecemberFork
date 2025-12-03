@@ -1,8 +1,4 @@
 
-using December.Domain.Interfaces;
-using December.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-
 namespace December.API
 {
     public class Program
@@ -18,7 +14,9 @@ namespace December.API
                 "Trust Server Certificate=true; Integrated Security=true; Encrypt=True;";
             builder.Services.AddDbContext<December.Infrastructure.DatabaseContext>(options =>
             options.UseSqlServer(sql));
+            builder.Services.AddScoped<IPersonService, PersonService>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+
             // builder.Services.AddDbContext<December.Infrastructure.DatabaseContext>(options =>
             //options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
             builder.Services.AddControllers();
