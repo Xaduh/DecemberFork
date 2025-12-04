@@ -18,6 +18,50 @@
             return Ok(await context.GetAll());
         }
 
+        // GET: api/People/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PersonDTOResponse>> GetPerson(int id)
+        {
+            var person = await context.GetById(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+            return Ok(person);
+        }
+
+        // POST: api/People
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<PersonDTOResponse>> CreatePerson(PersonDTORequest person)
+        {
+            PersonDTOResponse result = await context.Create(person);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+
+            //return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+        }
+
+        // PUT: api/People/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePerson(int id, PersonDTORequest person)
+        {
+            if (id != person.Id)
+            {
+                return BadRequest();
+            }
+
+            PersonDTOResponse result = await context.Update(person);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
         // Controller --> Service --> Repository --> Service --> Controller
 
 
@@ -42,36 +86,7 @@
         //    return person;
         //}
 
-        //// PUT: api/People/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutPerson(int id, Person person)
-        //{
-        //    if (id != person.Id)
-        //    {
-        //        return BadRequest();
-        //    }
 
-        //    _context.Entry(person).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!PersonExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
 
         //// POST: api/People
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -100,9 +115,6 @@
         //    return NoContent();
         //}
 
-        //private bool PersonExists(int id)
-        //{
-        //    return _context.Persons.Any(e => e.Id == id);
-        //}
+        
     }
 }
